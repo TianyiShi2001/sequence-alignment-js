@@ -1,3 +1,5 @@
+legacy/*
+hide/*
 # Logs
 logs
 *.log

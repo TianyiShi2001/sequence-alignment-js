@@ -1,0 +1,34 @@
+{
+  "name": "sequence-alignment",
+  "version": "0.0.1",
+  "description": "Sequence Alignment Algorithms implemented in Javascript, with a command line application",
+  "main": "index.js",
+  "bin": {
+    "align": "cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TianyiShi2001/sequence-alignment-js.git"
+  },
+  "keywords": [
+    "bioinformatics",
+    "alignment",
+    "sequence",
+    "algorithm",
+    "science"
+  ],
+  "author": "Tianyi Shi <ShiTianyi2001@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TianyiShi2001/sequence-alignment-js/issues"
+  },
+  "homepage": "https://github.com/TianyiShi2001/sequence-alignment-js#readme",
+  "type": "module",
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "yargs": "^15.4.1"
+  }
+}
