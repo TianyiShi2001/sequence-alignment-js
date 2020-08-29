@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Aligner } from "./src/nw.js";
 import { matrices } from "./src/matrices/matrices.js";
 import * as yargs from "yargs";

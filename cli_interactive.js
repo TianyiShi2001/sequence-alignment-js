@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 let inquirer = require("inquirer");
 inquirer
   .prompt([
