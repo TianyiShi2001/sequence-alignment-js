@@ -1,6 +1,6 @@
 {
   "name": "sequence-alignment",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Sequence Alignment Algorithms implemented in Javascript, with a command line application",
   "main": "index.js",
   "bin": {
@@ -28,6 +28,7 @@
   "homepage": "https://github.com/TianyiShi2001/sequence-alignment-js#readme",
   "type": "module",
   "dependencies": {
+    "chai": "^4.2.0",
     "inquirer": "^7.3.3",
     "yargs": "^15.4.1"
   }

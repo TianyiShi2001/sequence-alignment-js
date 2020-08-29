@@ -33,9 +33,8 @@ ATCCGAACATC-CAA-TCGAAGC
 |||||||||||||||||||||||
 ------AGC-ATGCAAT------
 score: 5
-```
 
-```bash
+$ align -M l ATCCGAACATCCAATCGAAGC AGCATGCAAT
 A-CAT-CCAAT
 |||||||||||
 AGCATGC-AAT

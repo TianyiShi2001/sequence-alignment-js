@@ -14,10 +14,15 @@ export function max_and_index(arr) {
   return [max, idx];
 }
 
-// compute the max score of one grid and one of the possible directions
-export function compute_max_score_and_direction(up, left, diag) {
-  let max_score = Math.max(up, left, diag);
-  return [max_score, [up, left, diag].indexOf(max_score) + 1];
+/**
+ * compute the max score of one grid and one of the possible directions.
+ * - for linear gap, `scores = [up, left, diag]
+ * - for affine gap, `scores` = [up_s, up_d, left_s, left_i, diag]
+ * @param {number[]} scores scores according to the direction
+ */
+export function compute_max_score_and_direction(...scores) {
+  let max_score = Math.max(...scores);
+  return [max_score, scores.indexOf(max_score) + 1];
 }
 
 export function match_fn_from_matrix(matrix) {
