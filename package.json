@@ -1,6 +1,6 @@
 {
   "name": "sequence-alignment",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Sequence Alignment Algorithms implemented in Javascript, with a command line application",
   "main": "index.js",
   "bin": {
