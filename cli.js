@@ -56,13 +56,16 @@ let argv = yargs.default // eslint-disable-line
   .epilog("copyright (c) 2020 Tianyi Shi")
   .showHelpOnFail(false).argv;
 
-if (argv._.length === 0) {
-  console.error("Need to provide two sequences");
+// ! sequences
+if (argv._.length !== 2) {
+  console.error("Need to provide two (and only two) sequences");
 }
 let type = argv.protein ? "p" : argv.rna ? "r" : "d";
 
+// ! match function (matrix or match/mismatch)
 let matchFn;
 let matchMismatch;
+let gapPenaltyFromMatrix;
 if (!argv.matrix) {
   if (type === "d" || type === "r") {
     matchMismatch = [1, -2];
@@ -72,20 +75,25 @@ if (!argv.matrix) {
   }
 } else {
   let m = argv.matrix.toUpperCase();
-  if (matrices[m]) {
-    matchFn = match_fn_from_matrix(matrices[m]);
+  let matrix = matrices[m];
+  if (matrix) {
+    matchFn = match_fn_from_matrix(matrix);
+    gapPenaltyFromMatrix = +matrix["A"]["*"];
   } else {
     matchMismatch = argv.matrix.split(/,\s*/g).map((s) => +s);
     matchFn = match_fn_from_match_mismatch(...matchMismatch);
   }
 }
 
+// ! gap penalty
 let gapPenalty, gapOpen, gapExtend;
 let affineGap = false;
 if (!argv.gap) {
-  gapPenalty = -1;
+  // * gap not specified
+  gapPenalty = gapPenaltyFromMatrix || -1;
 } else {
   if (argv.gap.includes(",")) {
+    // * affine gap penalty
     [gapOpen, gapExtend] = argv.gap
       .split(/,\s*/)
       .slice(0, 2)
@@ -99,6 +107,7 @@ if (!argv.gap) {
   }
 }
 
+// ! choosing the algorithm
 if (affineGap) {
   let aligner = new AffineGapAligner(argv._[0], argv._[1], matchFn, gapOpen, gapExtend);
   switch (argv.mode) {
