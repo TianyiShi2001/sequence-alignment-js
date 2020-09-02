@@ -1,13 +1,12 @@
 import { UP, LEFT, DIAG } from "./_params.js";
 import { compute_max_score_and_direction } from "./utils.js";
-import { show_alignment } from "./_show.js";
+import { show_alignment } from "./alignment_result.js";
+import { AlignmentResult } from "./alignment_result.js";
 /**
  * Aligner
  */
 export class Aligner {
-  score;
-  alignment;
-  coords;
+  result;
   /**
    *
    * @param {string} x the first sequence
@@ -16,37 +15,34 @@ export class Aligner {
    * @param {number} gap_penalty gap panelty (negative integer)
    */
   constructor(x, y, match_fn, gap_penalty) {
-    this.coords = [0, 0]; // unless local alignment
     this.x = x;
     this.y = y;
     this.n = x.length + 1;
     this.m = y.length + 1;
     this.match_fn = match_fn;
     this.gap_penalty = gap_penalty;
-  }
-  report() {
-    console.log(show_alignment(...this.traceback_string("-")));
-    console.log("score:", this.score);
-    return { x: this.x, y: this.y, score: this.score, coords: this.coords, alignment: this.alignment };
+    this.result = new AlignmentResult(x, y, [0, 0], [], -Infinity);
   }
   global() {
     this.init_matrices(true);
     this.fill_matrices();
-    this.score = this.S[this.x.length][this.y.length];
+    this.result.score = this.S[this.x.length][this.y.length];
     this.traceback_global();
-    return this.report();
+    return this.result;
+    // return new AlignmentResult(this.x, this.y, [0, 0], )
+    //return this.report();
   }
   semi_global() {
     this.init_matrices(false);
     this.fill_matrices();
     this.traceback_semiglobal();
-    return this.report();
+    return this.result;
   }
   local() {
     this.init_matrices(false);
     this.fill_matrices(true);
     this.traceback_local();
-    return this.report();
+    return this.result;
   }
 
   fill_matrices(local = false) {
@@ -82,8 +78,8 @@ export class Aligner {
         j--;
       } else break;
     }
-    this.coords = [i, j];
-    this.alignment = res.reverse();
+    this.result.coords = [i, j];
+    this.result.alignment = res.reverse();
   }
   // from (n-1, m-1) (last vertex) to (0, 0)
   traceback_global() {
@@ -101,7 +97,7 @@ export class Aligner {
         }
       }
     }
-    this.score = max;
+    this.result.score = max;
     this.traceback(coords);
   }
   traceback_semiglobal() {
@@ -125,7 +121,7 @@ export class Aligner {
       }
     }
 
-    this.score = max;
+    this.result.score = max;
 
     // traceback
     let [i, j] = coords;
@@ -161,25 +157,7 @@ export class Aligner {
     for (let m = 0; m < j; m++) {
       res.push(2);
     }
-    this.alignment = res;
-  }
-  // from the traceback matrix, resolve one of the possible alignments
-  traceback_string(gap_char, pretty) {
-    let [x, y] = [Array.from(this.x).slice(this.coords[0]), Array.from(this.y).slice(this.coords[1])];
-    let [aln1, aln2] = [[], []];
-    for (const direction of this.alignment) {
-      if (direction === UP) {
-        aln1.push(x.shift());
-        aln2.push(gap_char);
-      } else if (direction === LEFT) {
-        aln1.push(gap_char);
-        aln2.push(y.shift());
-      } else {
-        aln1.push(x.shift());
-        aln2.push(y.shift());
-      }
-    }
-    return [aln1.join(""), aln2.join("")];
+    this.result.alignment = res;
   }
 
   // initialise the score matrix and the traceback matrix

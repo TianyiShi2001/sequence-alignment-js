@@ -4,6 +4,7 @@ import { AffineGapAligner } from "./src/affine_gap.js";
 import { matrices } from "./src/matrices/matrices.js";
 import * as yargs from "yargs";
 import { match_fn_from_match_mismatch, match_fn_from_matrix } from "./src/utils.js";
+import { alias, boolean } from "yargs";
 
 let argv = yargs.default // eslint-disable-line
   .alias("V", "version")
@@ -43,6 +44,11 @@ let argv = yargs.default // eslint-disable-line
     alias: "g",
     describe: "Gap penalty (positive number). e.g. '5,2' for affine gap penalty with gapOpen=5 and gapExtend=2; '2' for linear gap penalty of -2",
     type: "string",
+  })
+  .option("score only", {
+    alias: "s",
+    describe: "Score-only mode",
+    type: "boolean",
   })
   .option("verbose", {
     alias: "v",
@@ -108,14 +114,15 @@ if (!argv.gap) {
 }
 
 // ! choosing the algorithm
+let result;
 if (affineGap) {
   let aligner = new AffineGapAligner(argv._[0], argv._[1], matchFn, gapOpen, gapExtend);
   switch (argv.mode) {
     case "g":
-      aligner.global();
+      result = aligner.global();
       break;
     default:
-      aligner.global();
+      result = aligner.global();
       console.log("Currently affine gap supports global alignment only.");
       break;
   }
@@ -123,18 +130,20 @@ if (affineGap) {
   let aligner = new Aligner(argv._[0], argv._[1], matchFn, gapPenalty);
   switch (argv.mode) {
     case "g":
-      aligner.global();
+      result = aligner.global();
       break;
     case "s":
-      aligner.semi_global();
+      result = aligner.semi_global();
       break;
     case "l":
-      aligner.local();
+      result = aligner.local();
       break;
     default:
       break;
   }
 }
+
+result.pretty_print();
 
 if (argv.verbose) {
   console.log({
@@ -145,3 +154,5 @@ if (argv.verbose) {
     gapExtend,
   });
 }
+
+console.log("score:", result.score);

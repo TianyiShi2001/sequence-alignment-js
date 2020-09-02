@@ -17,20 +17,11 @@ export class AffineGapAligner extends Aligner {
   global() {
     this.init_matrices(true);
     this.fill_matrices();
-    this.score = this.S[this.x.length][this.y.length];
-    this.traceback_global();
-    return this.report();
+    this.result.score = this.S[this.x.length][this.y.length];
+    this.traceback([this.n - 1, this.m - 1]);
+    return this.result;
   }
-  global_() {
-    this.init_matrices_(true);
-    this.fill_matrices_();
-    this.score = this.S[this.x.length][this.y.length];
-    this.traceback_global_();
-    return this.report();
-  }
-  traceback_global_() {
-    this.traceback_([this.n - 1, this.m - 1]);
-  }
+
   init_matrices(x) {
     this.D = Array.from({ length: this.n }, () => Array(this.m).fill(0));
     this.I = Array.from({ length: this.n }, () => Array(this.m).fill(0));
@@ -103,7 +94,7 @@ export class AffineGapAligner extends Aligner {
         m = this.T;
       } else break;
     }
-    this.coords = [i, j];
-    this.alignment = res.reverse();
+    this.result.coords = [i, j];
+    this.result.alignment = res.reverse();
   }
 }
