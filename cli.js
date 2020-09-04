@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 import { Aligner } from "./src/nw.js";
-import { AffineGapAligner } from "./src/affine_gap.js";
+import { SpaceEfficientAffineAligner } from "./src/space_efficient_affine.js";
 import { matrices } from "./src/matrices/matrices.js";
 import * as yargs from "yargs";
 import { match_fn_from_match_mismatch, match_fn_from_matrix } from "./src/utils.js";
-import { alias, boolean } from "yargs";
 
 let argv = yargs.default // eslint-disable-line
   .alias("V", "version")
@@ -116,13 +115,13 @@ if (!argv.gap) {
 // ! choosing the algorithm
 let result;
 if (affineGap) {
-  let aligner = new AffineGapAligner(argv._[0], argv._[1], matchFn, gapOpen, gapExtend);
+  let aligner = new SpaceEfficientAffineAligner(matchFn, gapOpen, gapExtend);
   switch (argv.mode) {
     case "g":
-      result = aligner.global();
+      result = aligner.global(argv._[0], argv._[1]);
       break;
     default:
-      result = aligner.global();
+      result = aligner.global(argv._[0], argv._[1]);
       console.log("Currently affine gap supports global alignment only.");
       break;
   }
