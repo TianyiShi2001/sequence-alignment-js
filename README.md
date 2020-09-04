@@ -3,6 +3,9 @@
 
 Sequence Alignment Algorithms implemented in Javascript, with a command line application.
 
+The space efficient version of Gotoh's algorithm is based on [Eugene W. Myers and Webb Miller (1988) Optimal alignments in linear space, _Bioinformatics_ **4**, 11-17.](https://doi.org/10.1093/bioinformatics/4.1.11)
+
+
 # Installation
 
 ```bash
