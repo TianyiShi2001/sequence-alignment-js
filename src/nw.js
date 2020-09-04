@@ -1,7 +1,6 @@
-import { UP, LEFT, DIAG } from "./_params.js";
-import { compute_max_score_and_direction } from "./utils.js";
-import { show_alignment } from "./alignment_result.js";
-import { AlignmentResult } from "./alignment_result.js";
+import { UP, LEFT, DIAG } from "./_common.js";
+import { compute_max_score_and_direction } from "./_common.js";
+import { AlignmentResult } from "./_common.js";
 /**
  * Aligner
  */

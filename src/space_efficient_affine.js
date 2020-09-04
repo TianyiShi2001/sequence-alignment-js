@@ -1,5 +1,5 @@
-import { UP, LEFT, DIAG } from "./_params.js";
-import { AlignmentResult } from "./alignment_result.js";
+import { UP, LEFT, DIAG } from "./_common.js";
+import { AlignmentResult } from "./_common.js";
 
 export class SpaceEfficientAffineAligner {
   constructor(match_fn, gap_open, gap_extend) {
@@ -143,7 +143,7 @@ export class SpaceEfficientAffineAligner {
     if (max == score_by_indels_only) {
       let res = Array.from({ lenth: n + 1 });
       res.push(UP);
-      for (j = 0; j < n; j++) {
+      for (let j = 0; j < n; j++) {
         res.push(LEFT);
       }
       return res;

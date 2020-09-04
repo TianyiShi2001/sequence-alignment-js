@@ -3,7 +3,7 @@ import { Aligner } from "./src/nw.js";
 import { SpaceEfficientAffineAligner } from "./src/space_efficient_affine.js";
 import { matrices } from "./src/matrices/matrices.js";
 import * as yargs from "yargs";
-import { match_fn_from_match_mismatch, match_fn_from_matrix } from "./src/utils.js";
+import { match_fn_from_match_mismatch, match_fn_from_matrix } from "./src/_common.js";
 
 let argv = yargs.default // eslint-disable-line
   .alias("V", "version")
